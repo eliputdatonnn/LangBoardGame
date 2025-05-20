@@ -1,0 +1,48 @@
+class BattleshipGame {
+    constructor(size = 5, ships = 3) {
+        this.size = size;
+        this.board = Array(size * size).fill(false);
+        this.ships = new Set();
+        this.initializeShips(ships);
+    }
+
+    initializeShips(count) {
+        while (this.ships.size < count) {
+            const position = Math.floor(Math.random() * this.board.length);
+            this.ships.add(position);
+        }
+    }
+
+    attack(position) {
+        if (position < 0 || position >= this.board.length) {
+            console.log("Invalid move! Try again.");
+            return false;
+        }
+        
+        if (this.ships.has(position)) {
+            console.log("Hit! 🚀");
+            this.ships.delete(position);
+            if (this.ships.size === 0) {
+                console.log("All ships are destroyed! You win!");
+            }
+        } else {
+            console.log("Miss! ❌");
+        }
+        return true;
+    }
+
+    displayBoard() {
+        let output = "";
+        for (let i = 0; i < this.board.length; i++) {
+            output += this.ships.has(i) ? "[S]" : "[ ]";
+            if ((i + 1) % this.size === 0) output += "\n";
+        }
+        console.log(output);
+    }
+}
+
+// Example usage:
+const game = new BattleshipGame();
+game.displayBoard(); // View board (ships are hidden from the player)
+game.attack(2); // Try hitting ship at index 2
+game.attack(10); // Another attempt
